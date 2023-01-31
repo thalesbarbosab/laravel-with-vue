@@ -2,19 +2,19 @@
     <div class="column">
         <div class="is-flex is-align-items-center is-justify-content-space-between">
             <section>
-                <strong>{{ tempoDecorrido }}</strong>
+                <strong class="display">{{ tempoDecorrido }}</strong>
             </section>
             <button class="button" @click="iniciar()" :disabled="executando">
                 <span class="icon">
                     <i class="fas fa-play"></i>
                 </span>
-                <span>play</span>
+                <span>Iniciar</span>
             </button>
             <button class="button" @click="finalizar()" :disabled="!executando">
                 <span class="icon">
                     <i class="fas fa-stop"></i>
                 </span>
-                <span>stop</span>
+                <span>Finalizar</span>
             </button>
         </div>
     </div>
@@ -53,3 +53,11 @@ export default defineComponent({
     }
 })
 </script>
+<style>
+    section {
+        padding: 0.30rem;
+    }
+    .display {
+        color: var(--texto-primario)
+    }
+</style>

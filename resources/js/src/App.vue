@@ -1,9 +1,9 @@
 <template>
-  <main class="columns is-gapless is-multiline">
+  <main class="columns is-gapless is-multiline" :class="classeModoEscuro">
     <div class="column is-one-quarter">
-      <BarraLateral/>
+      <BarraLateral @alteracaoDoTema="alterarTema"/>
     </div>
-    <div class="column is-three-quarter">
+    <div class="column is-three-quarter conteudo">
       <Formulario @aoSalvarTarefa="salvarTarefa" />
       <div class="list">
         <Tarefa v-for="(tarefa,index) in tarefas" :key="index" :tarefa="tarefa"/>
@@ -12,7 +12,7 @@
         </Box>
       </div>
     </div>
-    
+
   </main>
 </template>
 <script lang="ts">
@@ -28,17 +28,27 @@
     name: 'App',
     data(){
       return {
-        tarefas: [] as TarefaInterface[]
+        tarefas: [] as TarefaInterface[],
+        modo_escuro_ativo: false
       }
     },
     computed: {
       listaVaziaDeTarefa() : boolean {
         return this.tarefas.length === 0;
+      },
+      classeModoEscuro() {
+        if(this.modo_escuro_ativo){
+            return 'modo-escuro';
+        }
+        return null;
       }
     },
     methods: {
       salvarTarefa(tarefa : TarefaInterface){
         this.tarefas.push(tarefa);
+      },
+      alterarTema(modo_escuro : boolean) : void {
+        this.modo_escuro_ativo = modo_escuro;
       }
     },
     components: {
@@ -50,7 +60,18 @@
   });
 </script>
 <style>
-  .list {
-    padding: 1.25rem;
-  }
+    main{
+        --bg-primario: #fff;
+        --texto-primario: #000;
+    }
+    main.modo-escuro {
+        --bg-primario: #2b2d42;
+        --texto-primario: #ddd;
+    }
+    .list {
+        padding: 1.25rem;
+    }
+    .conteudo {
+        background-color: var(--bg-primario);
+    }
 </style>
