@@ -12,7 +12,7 @@
                     <router-link to="/" class="link">
                         <i class="fas fa-tasks"></i> Tarefas
                     </router-link>
-                    <router-link to="/projetos" class="link">
+                    <router-link to="/projetos/" class="link">
                         <i class="fas fa-project-diagram"></i> Projetos
                     </router-link>
                 </li>
@@ -39,9 +39,10 @@
                 return 'fas fa-sun';
             }
         },
+
         data (){
             return {
-                modo_escuro : false
+                modo_escuro : true
             }
         },
         methods: {
