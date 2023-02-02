@@ -46,14 +46,22 @@
 <script lang="ts">
     import { defineComponent, computed } from 'vue';
     import Box from '../../components/Box.vue';
+    import { TipoNotificacao } from '../../interfaces/NotificacaoInterface';
+    import { NotificacaoMixin } from '../../mixins/Notificar';
     import { useStore } from '../../store';
     export default defineComponent({
         name: 'Lista',
+        mounted(){
+            if(this.listaVaziaDeProjetos){
+               setTimeout(()=>this.notificar(TipoNotificacao.ATENCAO,'Ops!',`Não existe nenhum projeto cadastrado ainda. Clique no botão "Novo projeto" para cadastrar um novo.`),500);
+            }
+        },
         data() {
             return {
                 nome_do_projeto: '',
             }
         },
+        mixins: [NotificacaoMixin],
         computed: {
             listaVaziaDeProjetos(): boolean {
                 return this.projetos.length === 0;
@@ -64,7 +72,8 @@
         },
         methods: {
             excluir(id : string){
-                this.store.commit('EXCLUIR_PROJETO',id)
+                this.store.commit('EXCLUIR_PROJETO',id);
+                this.notificar(TipoNotificacao.SUCESSO,'Feito!',`Projeto removido com sucesso`);
             }
         },
         setup(){

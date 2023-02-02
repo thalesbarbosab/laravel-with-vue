@@ -18,6 +18,8 @@
 </template>
 <script lang="ts">
     import { defineComponent, computed } from 'vue';
+    import { NotificacaoInterface, TipoNotificacao } from '../../interfaces/NotificacaoInterface';
+    import { NotificacaoMixin } from '../../mixins/Notificar'
     import { useStore } from '../../store';
     export default defineComponent({
         name: 'Projetos',
@@ -37,16 +39,24 @@
                 nome_do_projeto: '',
             }
         },
+        mixins: [NotificacaoMixin],
         methods: {
             salvar() {
+                if(this.nome_do_projeto == ''){
+                    this.notificar(TipoNotificacao.ATENCAO,'Ops!',`O nome do projeto é obrigatório!`);
+                    return;
+                }
                 if(this.id){
                     this.store.commit('ALTERA_PROJETO',{
                         id: this.id,
                         nome_do_projeto: this.nome_do_projeto
                     })
+                    this.notificar(TipoNotificacao.SUCESSO,'Feito!',`Projeto alterado com sucesso`);
                 }else{
                     this.store.commit('ADICIONA_PROJETO',this.nome_do_projeto)
+                    this.notificar(TipoNotificacao.SUCESSO,'Feito!',`Projeto cadastrado com sucesso`);
                 }
+
                 this.$router.push('/projetos')
             }
         },
