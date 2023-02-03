@@ -1,5 +1,7 @@
 import { InjectionKey } from 'vue';
 import { createStore, Store, useStore as useStoreVuex } from 'vuex';
+import cliente_http from '../http';
+
 import ProjetosInterface from '../interfaces/ProjetoInterface';
 import { NotificacaoInterface } from '../interfaces/NotificacaoInterface';
 
@@ -36,6 +38,29 @@ export const store = createStore<Estado>({
             setTimeout(() => {
                 state.notificacoes =  state.notificacoes.filter((notif)=> notif.id != notificacao.id)
             }, 3000)
+        },
+        'DEFINIR_PROJETOS'(state, projetos : ProjetosInterface[]){
+            state.projetos = projetos;
+        },
+    },
+    actions: {
+        'OBTER_PROJETOS'({ commit }){
+            cliente_http.get('projetos')
+                        .then(resposta => commit('DEFINIR_PROJETOS', resposta.data))
+                        .catch(erro =>console.error(erro));
+        },
+        'NOVO_PROJETO'(contexto, nome_do_projeto : string){
+            return cliente_http.post('projetos',{
+                nome_do_projeto: nome_do_projeto
+            });
+        },
+        'ALTERAR_PROJETO'(contexto, projeto : ProjetoInterface){
+            return cliente_http.put(`projetos/${projeto.id}`,projeto);
+        },
+        'REMOVER_PROJETO'({ commit }, id : string){
+            return cliente_http.delete(`projetos/${id}`)
+                .then(()=> commit('EXCLUIR_PROJETO', id))
+                .catch(erro =>console.error(erro));
         }
     }
 })

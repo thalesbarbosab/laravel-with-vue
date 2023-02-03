@@ -18,7 +18,8 @@
 </template>
 <script lang="ts">
     import { defineComponent, computed } from 'vue';
-    import { NotificacaoInterface, TipoNotificacao } from '../../interfaces/NotificacaoInterface';
+    import { TipoNotificacao } from '../../interfaces/NotificacaoInterface';
+import ProjetoInterface from '../../interfaces/ProjetoInterface';
     import { NotificacaoMixin } from '../../mixins/Notificar'
     import { useStore } from '../../store';
     export default defineComponent({
@@ -47,17 +48,27 @@
                     return;
                 }
                 if(this.id){
-                    this.store.commit('ALTERA_PROJETO',{
+                    this.store.dispatch('ALTERAR_PROJETO',{
                         id: this.id,
                         nome_do_projeto: this.nome_do_projeto
-                    })
-                    this.notificar(TipoNotificacao.SUCESSO,'Feito!',`Projeto alterado com sucesso`);
+                    } as ProjetoInterface)
+                        .then(()=>{
+                            this.notificar(TipoNotificacao.SUCESSO,'Feito!',`Projeto alterado com sucesso`);
+                            this.$router.push('/projetos')
+                        })
+                        .catch(()=>{
+                            this.notificar(TipoNotificacao.FALHA,'Ops!',`Não foi possível alterar o projeto.`);
+                        })
                 }else{
-                    this.store.commit('ADICIONA_PROJETO',this.nome_do_projeto)
-                    this.notificar(TipoNotificacao.SUCESSO,'Feito!',`Projeto cadastrado com sucesso`);
+                    this.store.dispatch('NOVO_PROJETO',this.nome_do_projeto)
+                        .then(()=>{
+                            this.notificar(TipoNotificacao.SUCESSO,'Feito!',`Projeto cadastrado com sucesso.`);
+                            this.$router.push('/projetos')
+                        })
+                        .catch(()=>{
+                            this.notificar(TipoNotificacao.FALHA,'Ops!',`Não foi possível cadastrar o projeto.`);
+                        })
                 }
-
-                this.$router.push('/projetos')
             }
         },
         setup(){
