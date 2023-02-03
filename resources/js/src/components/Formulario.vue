@@ -38,14 +38,14 @@
             return {
                 id_projeto: null,
                 descricao: null,
-                projeto: this.projetos.find(proj => proj.id == this.id_projeto)
             }
         },
         methods: {
             finalizarTarefa(tempo_encerrado : number) : void {
                 this.$emit('aoSalvarTarefa',{
                     duracao_em_segundos: tempo_encerrado,
-                    descricao: this.descricao
+                    descricao: this.descricao,
+                    projeto: this.projetos.find(proj => proj.id == this.id_projeto)
                 });
                 this.descricao = null;
             }

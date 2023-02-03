@@ -4,8 +4,11 @@
             <div class="column is-0">
                 <i class="far fa-check-square"></i>
             </div>
-            <div class="column is-8">
+            <div class="column is-4">
                 {{ tarefa.descricao || '[Tarefa sem descrição]' }}
+            </div>
+            <div class="column is-3">
+                {{ tarefa.projeto?.nome_do_projeto }}
             </div>
             <div class="column is-3">
                 {{ tarefa.duracao_em_segundos }}
@@ -31,7 +34,3 @@
         }
     })
 </script>
-<style scoped>
-
-</style>
-
