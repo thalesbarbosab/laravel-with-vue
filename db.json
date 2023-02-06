@@ -1,8 +1,4 @@
 {
-  "projetos": [
-    {
-      "id": 1,
-      "nome_do_projeto": "Alura Tracker"
-    }
-  ]
+  "projetos": [],
+  "tarefas": []
 }

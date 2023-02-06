@@ -4,10 +4,12 @@ import cliente_http from '../http';
 
 import ProjetosInterface from '../interfaces/ProjetoInterface';
 import { NotificacaoInterface } from '../interfaces/NotificacaoInterface';
+import TarefaInterface from '../interfaces/TarefaInterface';
 
 interface Estado {
     projetos: ProjetosInterface[],
-    notificacoes: NotificacaoInterface[]
+    notificacoes: NotificacaoInterface[],
+    tarefas: TarefaInterface[]
 }
 
 export const key: InjectionKey<Store<Estado>> = Symbol()
@@ -15,9 +17,11 @@ export const key: InjectionKey<Store<Estado>> = Symbol()
 export const store = createStore<Estado>({
     state: {
         projetos: [],
-        notificacoes: []
+        notificacoes: [],
+        tarefas: []
     },
     mutations: {
+        // Projetos
         'ADICIONA_PROJETO'(state, nome_do_projeto : string){
             const projeto = {
                 id: new Date().toISOString(),
@@ -42,8 +46,16 @@ export const store = createStore<Estado>({
         'DEFINIR_PROJETOS'(state, projetos : ProjetosInterface[]){
             state.projetos = projetos;
         },
+        // Tarefas
+        'ADICIONA_TAREFA'(state, tarefa : TarefaInterface){
+            state.tarefas.push(tarefa)
+        },
+        'DEFINIR_TAREFAS'(state, tarefas : TarefaInterface[]){
+            state.tarefas = tarefas;
+        },
     },
     actions: {
+        // Projetos
         'OBTER_PROJETOS'({ commit }){
             cliente_http.get('projetos')
                         .then(resposta => commit('DEFINIR_PROJETOS', resposta.data))
@@ -54,14 +66,27 @@ export const store = createStore<Estado>({
                 nome_do_projeto: nome_do_projeto
             });
         },
-        'ALTERAR_PROJETO'(contexto, projeto : ProjetoInterface){
+        'ALTERAR_PROJETO'(contexto, projeto : ProjetosInterface){
             return cliente_http.put(`projetos/${projeto.id}`,projeto);
         },
         'REMOVER_PROJETO'({ commit }, id : string){
             return cliente_http.delete(`projetos/${id}`)
                 .then(()=> commit('EXCLUIR_PROJETO', id))
                 .catch(erro =>console.error(erro));
-        }
+        },
+        // Tarefas
+        'NOVA_TAREFA'({ commit }, tarefa : TarefaInterface){
+            return cliente_http.post('tarefas',tarefa)
+                               .then(resposta => commit('ADICIONA_TAREFA', resposta.data))
+        },
+        'ALTERAR_TAREFA'(contexto, tarefa : TarefaInterface){
+            return cliente_http.put(`tarefas/${tarefa.id}`,tarefa);
+        },
+        'OBTER_TAREFAS'({ commit }){
+            cliente_http.get('tarefas')
+                        .then(resposta => commit('DEFINIR_TAREFAS', resposta.data))
+                        .catch(erro =>console.error(erro));
+        },
     }
 })
 

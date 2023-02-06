@@ -1,6 +1,6 @@
 <template>
     <Box>
-        <div class="columns">
+        <div class="columns clicavel" @click="tarefaClicada">
             <div class="column is-0">
                 <i class="far fa-check-square"></i>
             </div>
@@ -23,10 +23,16 @@
 
     export default defineComponent({
         name: 'Tarefa',
+        emits: ['aoTarefaClicada'],
         props: {
             tarefa: {
                 type: Object as PropType<TarefaInterface>,
                 required: true
+            }
+        },
+        methods: {
+            tarefaClicada(): void {
+                this.$emit('aoTarefaClicada',this.tarefa);
             }
         },
         components: {
@@ -34,3 +40,8 @@
         }
     })
 </script>
+<style scoped>
+    .clicavel {
+        cursor: pointer;
+    }
+</style>
