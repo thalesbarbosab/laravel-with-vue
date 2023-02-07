@@ -10,7 +10,7 @@
                 <slot></slot>
             </section>
             <footer class="modal-card-foot">
-                <button class="button is-success" @click="salvar">{{ this.nome_botao_salvar }}</button>
+                <button class="button is-success" @click="salvar" :disabled="!habilitar_botao_salvar">{{ this.nome_botao_salvar }}</button>
                 <button class="button" @click="fechar">Cancelar</button>
             </footer>
         </div>
@@ -24,7 +24,8 @@
         props: {
             aberto: Boolean,
             titulo: String,
-            nome_botao_salvar: String
+            nome_botao_salvar: String,
+            habilitar_botao_salvar: Boolean
         },
         methods: {
             fechar(){

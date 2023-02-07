@@ -9,6 +9,7 @@
             :aberto="tarefaSelecionada"
             :titulo="'Editar tarefa'"
             :nome_botao_salvar="'Salvar alterações da tarefa'"
+            :habilitar_botao_salvar="tarefaSelecionadaTemDescricao"
             @aoModalFechado="removerSelecaoTarefa"
             @aoModalSalvado="alterar"
             v-if="tarefa_selecionada">
@@ -43,6 +44,9 @@
             },
             tarefaSelecionada(): boolean {
                 return this.tarefa_selecionada != null
+            },
+            tarefaSelecionadaTemDescricao() : boolean {
+                return this.tarefa_selecionada.descricao ? true : false;
             }
         },
         mixins: [NotificacaoMixin],
