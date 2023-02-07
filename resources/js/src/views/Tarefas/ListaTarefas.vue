@@ -1,27 +1,31 @@
 <template>
     <Formulario @aoSalvarTarefa="salvar" />
     <div class="list">
-        <Tarefa v-for="(tarefa, index) in tarefas" :key="index" :tarefa="tarefa" @aoTarefaClicada="selecionarTarefa"/>
+        <div class="field">
+            <p class="control has-icons-left">
+                <input class="input" type="text" placeholder="Filtrar tarefas" v-model="filtro">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-search"></i>
+                </span>
+            </p>
+        </div>
+        <Tarefa v-for="(tarefa, index) in tarefas" :key="index" :tarefa="tarefa" @aoTarefaClicada="selecionarTarefa" />
         <Box v-if="listaVaziaDeTarefa">
-            Nenhuma tarefa criada ainda!
+            Nenhuma tarefa criada ainda ou o filtro utilizado não possúi nenhuma referência!
         </Box>
-        <Modal
-            :aberto="tarefaSelecionada"
-            :titulo="'Editar tarefa'"
-            :nome_botao_salvar="'Salvar alterações da tarefa'"
-            :habilitar_botao_salvar="tarefaSelecionadaTemDescricao"
-            @aoModalFechado="removerSelecaoTarefa"
-            @aoModalSalvado="alterar"
-            v-if="tarefa_selecionada">
+        <Modal :aberto="tarefaSelecionada" :titulo="'Editar tarefa'" :nome_botao_salvar="'Salvar alterações da tarefa'"
+            :habilitar_botao_salvar="tarefaSelecionadaTemDescricao" @aoModalFechado="removerSelecaoTarefa"
+            @aoModalSalvado="alterar" v-if="tarefa_selecionada">
             <div class="field">
                 <label for="descricao" class="label">Descrição</label>
-                <input type="text" class="input" v-model="tarefa_selecionada.descricao" id="descricao" placeholder="Insira a descrição">
+                <input type="text" class="input" v-model="tarefa_selecionada.descricao" id="descricao"
+                    placeholder="Insira a descrição">
             </div>
         </Modal>
     </div>
 </template>
 <script lang="ts">
-    import { defineComponent, computed } from 'vue';
+    import { defineComponent, computed, ref, watchEffect, watch } from 'vue';
     import Formulario from '../../components/Formulario.vue';
     import Tarefa from '../../components/Tarefa.vue';
     import { TipoNotificacao } from '../../interfaces/NotificacaoInterface';
@@ -35,7 +39,7 @@
         name: 'ListaTarefas',
         data() {
             return {
-                tarefa_selecionada : null as TarefaInterface | null
+                tarefa_selecionada: null as TarefaInterface | null,
             }
         },
         computed: {
@@ -45,7 +49,7 @@
             tarefaSelecionada(): boolean {
                 return this.tarefa_selecionada != null
             },
-            tarefaSelecionadaTemDescricao() : boolean {
+            tarefaSelecionadaTemDescricao(): boolean {
                 return this.tarefa_selecionada.descricao ? true : false;
             }
         },
@@ -60,7 +64,7 @@
                         this.notificar(TipoNotificacao.FALHA, 'Ops!', `Não foi possível cadastrar a tarefa.`);
                     })
             },
-            alterar(){
+            alterar() {
                 this.store.dispatch('ALTERAR_TAREFA', this.tarefa_selecionada)
                     .then(() => {
                         this.removerSelecaoTarefa();
@@ -70,10 +74,10 @@
                         this.notificar(TipoNotificacao.FALHA, 'Ops!', `Não foi possível alter a tarefa.`);
                     })
             },
-            selecionarTarefa(tarefa : TarefaInterface){
+            selecionarTarefa(tarefa: TarefaInterface) {
                 this.tarefa_selecionada = tarefa;
             },
-            removerSelecaoTarefa(){
+            removerSelecaoTarefa() {
                 this.tarefa_selecionada = null;
             },
         },
@@ -82,14 +86,19 @@
             Tarefa,
             Box,
             Modal
-    },
-    setup() {
-        const store = useStore();
-        store.dispatch('OBTER_TAREFAS');
-        return {
-            store,
-            tarefas: computed(() => store.state.tarefa.tarefas)
+        },
+        setup() {
+            const store = useStore();
+            const filtro = ref("");
+            store.dispatch('OBTER_TAREFAS');
+            watch(filtro,() => {
+                store.dispatch('OBTER_TAREFAS',filtro.value)
+            })
+            return {
+                tarefas: computed(() => store.state.tarefa.tarefas),
+                store,
+                filtro,
+            }
         }
-    }
 });
 </script>

@@ -24,8 +24,12 @@ export const tarefa: Module<EstadoTarefa,Estado> = {
         'ALTERAR_TAREFA'(contexto, tarefa : TarefaInterface){
             return cliente_http.put(`tarefas/${tarefa.id}`,tarefa);
         },
-        'OBTER_TAREFAS'({ commit }){
-            cliente_http.get('tarefas')
+        'OBTER_TAREFAS'({ commit }, filtro? : string){
+            let url = 'tarefas';
+            if(filtro){
+                url += '?descricao=' + filtro;
+            }
+            cliente_http.get(url)
                         .then(resposta => commit('DEFINIR_TAREFAS', resposta.data))
                         .catch(erro =>console.error(erro));
         },
