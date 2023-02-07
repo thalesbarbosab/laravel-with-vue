@@ -9,7 +9,7 @@
             </router-link>
         </div>
         <div class="list">
-            <table class="table is-fullwidth"  v-if="!listaVaziaDeProjetos">
+            <table class="table is-fullwidth" v-if="!listaVaziaDeProjetos">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -51,11 +51,6 @@
     import { useStore } from '../../store';
     export default defineComponent({
         name: 'Lista',
-        mounted(){
-            if(this.listaVaziaDeProjetos){
-               setTimeout(()=>this.notificar(TipoNotificacao.ATENCAO,'Ops!',`Não existe nenhum projeto cadastrado ainda. Clique no botão "Novo projeto" para cadastrar um novo.`),500);
-            }
-        },
         data() {
             return {
                 nome_do_projeto: '',
@@ -64,7 +59,7 @@
         mixins: [NotificacaoMixin],
         computed: {
             listaVaziaDeProjetos(): boolean {
-                return this.projetos.length === 0;
+                return this.projetos && this.projetos.length === 0;
             },
         },
         components: {
@@ -86,7 +81,7 @@
             store.dispatch('OBTER_PROJETOS');
             return {
                 store,
-                projetos: computed(() => store.state.projetos)
+                projetos: computed(() => store.state.projeto.projetos)
             }
         }
     });

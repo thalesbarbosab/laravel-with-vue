@@ -17,7 +17,7 @@
     </section>
 </template>
 <script lang="ts">
-    import { defineComponent, computed } from 'vue';
+    import { defineComponent, computed, ref } from 'vue';
     import { TipoNotificacao } from '../../interfaces/NotificacaoInterface';
 import ProjetoInterface from '../../interfaces/ProjetoInterface';
     import { NotificacaoMixin } from '../../mixins/Notificar'
@@ -27,17 +27,6 @@ import ProjetoInterface from '../../interfaces/ProjetoInterface';
         props : {
             id: {
                 type: String
-            }
-        },
-        mounted(){
-            if(this.id){
-                const projeto = this.store.state.projetos.find(projeto => projeto.id == this.id);
-                this.nome_do_projeto = projeto?.nome_do_projeto;
-            }
-        },
-        data() {
-            return {
-                nome_do_projeto: '',
             }
         },
         mixins: [NotificacaoMixin],
@@ -71,12 +60,18 @@ import ProjetoInterface from '../../interfaces/ProjetoInterface';
                 }
             }
         },
-        setup(){
+        setup(props){
             const store = useStore();
+            const nome_do_projeto = ref("");
+            if(props.id){
+                const projeto = store.state.projeto.projetos.find(projeto => projeto.id == props.id);
+                nome_do_projeto.value = projeto?.nome_do_projeto || "";
+            }
             return {
                 store,
-                projetos: computed(() => store.state.projetos)
+                nome_do_projeto
             }
+
         }
     });
 </script>

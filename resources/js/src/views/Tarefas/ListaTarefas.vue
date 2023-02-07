@@ -40,7 +40,7 @@
         },
         computed: {
             listaVaziaDeTarefa(): boolean {
-                return this.tarefas.length === 0;
+                return this.tarefas && this.tarefas.length === 0;
             },
             tarefaSelecionada(): boolean {
                 return this.tarefa_selecionada != null
@@ -78,17 +78,17 @@
             },
         },
         components: {
-        Formulario,
-        Tarefa,
-        Box,
-        Modal
+            Formulario,
+            Tarefa,
+            Box,
+            Modal
     },
     setup() {
         const store = useStore();
         store.dispatch('OBTER_TAREFAS');
         return {
             store,
-            tarefas: computed(() => store.state.tarefas)
+            tarefas: computed(() => store.state.tarefa.tarefas)
         }
     }
 });
