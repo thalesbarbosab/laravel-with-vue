@@ -1,7 +1,7 @@
 import { Module } from "vuex";
-import ProjetoInterface from "../../../interfaces/ProjetoInterface";
-import { Estado } from "../../../store";
-import cliente_http from '../../../http';
+import ProjetoInterface from "@/interfaces/ProjetoInterface";
+import { Estado } from "@/store";
+import cliente_http from '@/http';
 
 export interface EstadoProjeto {
     projetos: ProjetoInterface[]

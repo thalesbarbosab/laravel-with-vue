@@ -45,10 +45,10 @@
 </template>
 <script lang="ts">
     import { defineComponent, computed } from 'vue';
-    import Box from '../../components/Box.vue';
-    import { TipoNotificacao } from '../../interfaces/NotificacaoInterface';
-    import { NotificacaoMixin } from '../../mixins/Notificar';
-    import { useStore } from '../../store';
+    import Box from '@/components/Box.vue';
+    import { TipoNotificacao } from '@/interfaces/NotificacaoInterface';
+    import { NotificacaoMixin } from '@/mixins/Notificar';
+    import { useStore } from '@/store';
     export default defineComponent({
         name: 'Lista',
         data() {

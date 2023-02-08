@@ -26,14 +26,14 @@
 </template>
 <script lang="ts">
     import { defineComponent, computed, ref, watchEffect, watch } from 'vue';
-    import Formulario from '../../components/Formulario.vue';
-    import Tarefa from '../../components/Tarefa.vue';
-    import { TipoNotificacao } from '../../interfaces/NotificacaoInterface';
-    import TarefaInterface from '../../interfaces/TarefaInterface';
-    import Box from '../../components/Box.vue';
-    import { useStore } from '../../store';
-    import { NotificacaoMixin } from '../../mixins/Notificar';
-    import Modal from '../../components/Modal.vue';
+    import Formulario from '@/components/Formulario.vue';
+    import Tarefa from '@/components/Tarefa.vue';
+    import { TipoNotificacao } from '@/interfaces/NotificacaoInterface';
+    import TarefaInterface from '@/interfaces/TarefaInterface';
+    import Box from '@/components/Box.vue';
+    import { useStore } from '@/store';
+    import { NotificacaoMixin } from '@/mixins/Notificar';
+    import Modal from "@/components/Modal.vue";
 
     export default defineComponent({
         name: 'ListaTarefas',

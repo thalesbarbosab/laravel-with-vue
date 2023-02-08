@@ -19,7 +19,7 @@
 <script lang="ts">
     import { defineComponent, PropType } from 'vue';
     import TarefaInterface from '../interfaces/TarefaInterface';
-    import Box from './Box.vue';
+    import Box from '@/components/Box.vue';
 
     export default defineComponent({
         name: 'Tarefa',

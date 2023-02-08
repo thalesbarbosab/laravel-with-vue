@@ -1,4 +1,4 @@
-import ProjetoInterface from "./ProjetoInterface";
+import ProjetoInterface from "@/interfaces/ProjetoInterface";
 
 export default interface TarefaInterface
 {

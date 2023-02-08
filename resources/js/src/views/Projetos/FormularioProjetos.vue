@@ -18,10 +18,10 @@
 </template>
 <script lang="ts">
     import { defineComponent, computed, ref } from 'vue';
-    import { TipoNotificacao } from '../../interfaces/NotificacaoInterface';
-import ProjetoInterface from '../../interfaces/ProjetoInterface';
-    import { NotificacaoMixin } from '../../mixins/Notificar'
-    import { useStore } from '../../store';
+    import { TipoNotificacao } from '@/interfaces/NotificacaoInterface';
+import ProjetoInterface from '@/interfaces/ProjetoInterface';
+    import { NotificacaoMixin } from '@/mixins/Notificar'
+    import { useStore } from '@/store';
     export default defineComponent({
         name: 'Projetos',
         props : {

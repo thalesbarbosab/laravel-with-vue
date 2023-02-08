@@ -25,8 +25,8 @@
 <script lang="ts">
     import { defineComponent, computed } from 'vue';
     import { useStore } from 'vuex';
-    import { key } from '../store';
-    import Cronometro from './Cronometro.vue';
+    import { key } from '@/store';
+    import Cronometro from '@/components/Cronometro.vue';
 
     export default defineComponent({
         name: 'Formulario',

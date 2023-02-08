@@ -1,9 +1,9 @@
 import { InjectionKey } from 'vue';
 import { createStore, Store, useStore as useStoreVuex } from 'vuex';
 
-import { NotificacaoInterface } from '../interfaces/NotificacaoInterface';
-import { EstadoProjeto, projeto } from './modulos/projeto';
-import { EstadoTarefa, tarefa } from './modulos/tarefa';
+import { NotificacaoInterface } from '@/interfaces/NotificacaoInterface';
+import { EstadoProjeto, projeto } from '@/store/modulos/projeto';
+import { EstadoTarefa, tarefa } from '@/store/modulos/tarefa/';
 
 export interface Estado {
     notificacoes: NotificacaoInterface[],

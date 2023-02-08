@@ -1,7 +1,7 @@
 import { Module } from "vuex";
-import TarefaInterface from "../../../interfaces/TarefaInterface";
-import { Estado } from "../../../store";
-import cliente_http from '../../../http';
+import TarefaInterface from "@/interfaces/TarefaInterface";
+import { Estado } from "@/store";
+import cliente_http from '@/http';
 
 export interface EstadoTarefa {
     tarefas: TarefaInterface[]

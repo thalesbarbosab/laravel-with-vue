@@ -11,8 +11,8 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import BarraLateral from './components/BarraLateral.vue';
-  import Notificacao from './components/Notificacao.vue';
+  import BarraLateral from '@/components/BarraLateral.vue';
+  import Notificacao from '@/components/Notificacao.vue';
 
   export default defineComponent({
     name: 'App',

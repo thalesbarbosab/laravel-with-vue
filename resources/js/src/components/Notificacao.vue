@@ -13,8 +13,8 @@
 </template>
 <script lang="ts">
     import { defineComponent, computed } from 'vue';
-    import { useStore } from '../store';
-    import { TipoNotificacao } from '../interfaces/NotificacaoInterface';
+    import { useStore } from '@/store';
+    import { TipoNotificacao } from '@/interfaces/NotificacaoInterface';
     export default defineComponent({
         name: 'Notificacao',
         data(){
