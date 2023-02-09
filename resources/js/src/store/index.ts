@@ -4,8 +4,10 @@ import { createStore, Store, useStore as useStoreVuex } from 'vuex';
 import { NotificacaoInterface } from '@/interfaces/NotificacaoInterface';
 import { EstadoProjeto, projeto } from '@/store/modulos/projeto';
 import { EstadoTarefa, tarefa } from '@/store/modulos/tarefa/';
+import { EstadoUsuario, usuario } from '@/store/modulos/usuario';
 
 export interface Estado {
+    usuario: EstadoUsuario,
     notificacoes: NotificacaoInterface[],
     tarefa: EstadoTarefa,
     projeto: EstadoProjeto
@@ -37,7 +39,8 @@ export const store = createStore<Estado>({
     },
     modules: {
         projeto,
-        tarefa
+        tarefa,
+        usuario
     }
 })
 

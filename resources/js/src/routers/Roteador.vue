@@ -1,16 +1,19 @@
 <script lang="ts">
     import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-    import Projetos from '@/views/Projetos.vue';
-    import ListaProjetos from "@/views/Projetos/ListaProjetos.vue";
-    import FormularioProjetos from "@/views/Projetos/FormularioProjetos.vue";
+
+    import Login from "@/views/Login.vue";
 
     import Tarefas from '@/views/Tarefas.vue';
     import ListaTarefas from "@/views/Tarefas/ListaTarefas.vue";
 
+    import Projetos from '@/views/Projetos.vue';
+    import ListaProjetos from "@/views/Projetos/ListaProjetos.vue";
+    import FormularioProjetos from "@/views/Projetos/FormularioProjetos.vue";
+
     const rotas : RouteRecordRaw[] = [
        {
-        path: '/',
-        redirect: '/tarefas'
+            path: '/',
+            component: Login
        },
        {
             path: '/tarefas',

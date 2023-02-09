@@ -9,11 +9,14 @@
         <nav class="panel mt-5">
             <ul>
                 <li>
-                    <router-link to="/" class="link">
+                    <router-link to="/tarefas" class="link">
                         <i class="fas fa-tasks"></i> Tarefas
                     </router-link>
-                    <router-link to="/projetos/" class="link">
+                    <router-link to="/projetos" class="link">
                         <i class="fas fa-project-diagram"></i> Projetos
+                    </router-link>
+                    <router-link to="/logout" class="link">
+                        <i class="fas fa-sign-out-alt"></i> Sair
                     </router-link>
                 </li>
             </ul>
@@ -75,6 +78,12 @@
     }
     .link.router-link-active {
         color: #FAF0CA;
+    }
+    @media only screen and (max-width: 1000px) {
+        button {
+            display: flex;
+            width: 100%;
+        }
     }
     @media only screen and (max-width: 768px) {
         header {
