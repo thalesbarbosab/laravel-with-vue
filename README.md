@@ -11,8 +11,10 @@ As an example, the project learned in the Alura vue course, the alura tracker, w
 
 ### Open 4 prompt commands to stay execution on the using:
 
-### Prompt 1 - Run command bellow to install all packges for laravel and vue (administration pemissions is recommended)
+### Prompt 1 - Run command bellow, first: to install all packages for laravel, second: create a new keys for laravel passport api and third: install vue and other js packages(administration pemissions is recommended)
 ```composer install```
+next
+```php artisan passport:keys```
 then
 ```npm install```
 ### Prompt 2 - Run command bellow to start laravel server
