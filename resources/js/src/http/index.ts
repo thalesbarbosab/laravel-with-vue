@@ -9,7 +9,8 @@ export const credenciais_api = {
 export const cliente_http : AxiosInstance = axios.create({
     baseURL: '/api',
     headers: {
-        "Content-Type": 'application/json'
+        // "Content-Type": 'application/json'
+        'Accept': 'application/json',
     }
 })
 

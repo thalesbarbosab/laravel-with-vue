@@ -18,9 +18,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="projeto in projetos" :key="projeto.id">
+                    <tr v-for="projeto in this.projeto.projetos" :key="projeto.id">
                         <td>{{ projeto.id  }}</td>
-                        <td>{{ projeto.nome_do_projeto }}</td>
+                        <td>{{ projeto.name }}</td>
                         <td>
                             <router-link :to="`/projetos/${projeto.id}`" class="button">
                                 <span class="icon is-small">
@@ -48,7 +48,7 @@
     import Box from '@/components/Box.vue';
     import { TipoNotificacao } from '@/interfaces/NotificacaoInterface';
     import { NotificacaoMixin } from '@/mixins/Notificar';
-    import { useStore } from '@/store';
+    import { useProjetoStore } from '@/stores/projeto';
     export default defineComponent({
         name: 'Lista',
         data() {
@@ -59,7 +59,7 @@
         mixins: [NotificacaoMixin],
         computed: {
             listaVaziaDeProjetos(): boolean {
-                return this.projetos && this.projetos.length === 0;
+                return this.projeto.projetos && this.projeto.projetos.length === 0;
             },
         },
         components: {
@@ -67,21 +67,22 @@
         },
         methods: {
             excluir(id : string){
-                this.store.dispatch('REMOVER_PROJETO', id)
-                .then(() => {
+                this.projeto.remover(id)
+                .then(async () => {
+                        this.projeto.projetos = this.projeto.projetos.filter(proj => proj.id != id)
                         this.notificar(TipoNotificacao.SUCESSO,'Feito!',`Projeto removido com sucesso`)
                     })
-                    .catch(()=>{
+                    .catch(async (erro)=>{
                         this.notificar(TipoNotificacao.FALHA,'Ops!',`Não foi possível remover o projeto.`);
                     })
             }
         },
         setup(){
-            const store = useStore();
-            store.dispatch('OBTER_PROJETOS');
+            const projeto = useProjetoStore();
+            projeto.todos();
+
             return {
-                store,
-                projetos: computed(() => store.state.projeto.projetos)
+                projeto
             }
         }
     });

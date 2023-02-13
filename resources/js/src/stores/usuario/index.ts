@@ -27,7 +27,7 @@ export const useUsuarioStore = defineStore('usuario',{
                 );
         },
         verificarTokenApi(){
-            return cliente_http.get('/token/verificar',{
+            return cliente_http.get('/token/verify',{
                         headers: {
                             'Authorization': `Bearer ${this.token_acesso}`,
                             'Accept': 'application/json'
