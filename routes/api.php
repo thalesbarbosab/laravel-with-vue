@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ProjectController;
+use App\Http\Controllers\Api\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Http\Controllers\AccessTokenController;
@@ -27,4 +28,5 @@ Route::middleware('throttle')->group(function(){
 Route::middleware('auth:api')->group(function(){
     Route::get('/token/verify', fn()=> response()->json(['message'=>'OK'], 200))->name('token.verify');
     Route::apiResource('projects', ProjectController::class);
+    Route::apiResource('tasks', TaskController::class);
 });
