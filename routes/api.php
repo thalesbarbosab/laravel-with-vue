@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ProjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Http\Controllers\AccessTokenController;
@@ -15,11 +16,15 @@ use Laravel\Passport\Http\Controllers\AccessTokenController;
 |
 */
 
+
+
 // Custom laravel passport routes
 Route::middleware('throttle')->group(function(){
     Route::post('/token', [AccessTokenController::class,'issueToken'])->name('token');
 });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//
+Route::middleware('auth:api')->group(function(){
+    Route::get('/token/verify', fn()=> response()->json(['message'=>'OK'], 200))->name('token.verify');
+    Route::apiResource('projects', ProjectController::class);
 });
