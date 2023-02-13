@@ -9,25 +9,32 @@
         <nav class="panel mt-5">
             <ul>
                 <li>
-                    <router-link to="/tarefas" class="link">
+                    <router-link to="/" class="link" v-if="!usuario.logado">
+                        <i class="fas fa-sign-in"></i> Login
+                    </router-link>
+                    <router-link to="/tarefas" class="link" v-if="usuario.logado">
                         <i class="fas fa-tasks"></i> Tarefas
                     </router-link>
-                    <router-link to="/projetos" class="link">
+                    <router-link to="/projetos" class="link" v-if="usuario.logado">
                         <i class="fas fa-project-diagram"></i> Projetos
                     </router-link>
-                    <router-link to="/logout" class="link">
+                    <a class="link" @click="logout" v-if="usuario.logado">
                         <i class="fas fa-sign-out-alt"></i> Sair
-                    </router-link>
+                    </a>
                 </li>
             </ul>
         </nav>
     </header>
 </template>
 <script lang="ts">
+    import { TipoNotificacao } from '@/interfaces/NotificacaoInterface';
+    import { NotificacaoMixin } from '@/mixins/Notificar';
+    import { useUsuarioStore } from '@/stores/usuario';
     import { defineComponent } from 'vue'
     export default defineComponent({
         name: 'BarraLateral',
         emits: ['alteracaoDoTema'],
+        mixins: [NotificacaoMixin],
         computed: {
             textoBotao(){
                 if(!this.modo_escuro){
@@ -52,8 +59,19 @@
             alterarTema() : void {
                 this.modo_escuro = !this.modo_escuro;
                 this.$emit('alteracaoDoTema', this.modo_escuro);
+            },
+            logout() : void {
+                this.$router.push('/');
+                this.notificar(TipoNotificacao.SUCESSO,'Feito!',`Logout realizado com sucesso`);
+                this.usuario.removerTokenAcesso();
             }
-        }
+        },
+        setup() {
+            const usuario = useUsuarioStore();
+            return {
+                usuario
+            }
+        },
     })
 </script>
 <style scoped>

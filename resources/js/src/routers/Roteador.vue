@@ -10,14 +10,20 @@
     import ListaProjetos from "@/views/Projetos/ListaProjetos.vue";
     import FormularioProjetos from "@/views/Projetos/FormularioProjetos.vue";
 
+    import { useUsuarioStore } from "@/stores/usuario";
+
     const rotas : RouteRecordRaw[] = [
        {
             path: '/',
-            component: Login
+            component: Login,
+            name: 'login'
        },
        {
             path: '/tarefas',
             component: Tarefas,
+            meta: {
+                requer_autenticacao : true
+            },
             children: [
                 {
                     path: '',
@@ -29,11 +35,14 @@
        {
         path: '/projetos',
         component: Projetos,
+        meta: {
+            requer_autenticacao : true
+        },
         children: [
             {
                 path: '',
                 name: 'Projetos',
-                component: ListaProjetos
+                component: ListaProjetos,
             },
             {
                 path: 'novo',
@@ -46,13 +55,24 @@
                 component: FormularioProjetos,
                 props: true
             }
-        ]
-       }
+        ],
+       },
     ];
 
     const roteador = createRouter({
         history: createWebHashHistory(),
         routes: rotas
+    });
+
+    roteador.beforeEach((to, from, next) =>{
+        if(to.meta.requer_autenticacao){
+            const usuario = useUsuarioStore();
+            const resultado = usuario.acessoValido;
+            if(!resultado){
+                next({name: 'login'});
+            }
+        }
+        next();
     });
 
     export default roteador
