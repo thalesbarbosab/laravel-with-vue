@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <h1 class="title">Login</h1>
-        <form @submit.prevent="enviar">
+        <form @submit.prevent="login">
             <div class="field">
                 <p class="control has-icons-left has-icons-right">
                     <input class="input" type="email" placeholder="Email" v-model="usuario.email" autocomplete="username">
@@ -31,7 +31,9 @@
 <script lang="ts">
     import { defineComponent, computed } from 'vue';
     import UsuarioInterface from '@/interfaces/UsuarioInterface';
-    import { useStore } from '@/store';
+    import { useUsuarioStore } from '@/stores/usuario';
+    import { TipoNotificacao } from '@/interfaces/NotificacaoInterface';
+    import { NotificacaoMixin } from '@/mixins/Notificar';
     export default defineComponent({
         name: 'Login',
         data() {
@@ -42,17 +44,30 @@
                 } as UsuarioInterface
             }
         },
+        mixins: [NotificacaoMixin],
         methods: {
-            enviar() {
-                this.store.dispatch('LOGIN', this.usuario)
-                    .then((resposta)=> console.log(resposta))
-                    .catch((error)=>console.error(error))
+            login() : void {
+                this.usuario.login(this.usuario)
+                    .then(async (resposta)=> {
+                        this.limparFormulario()
+                        this.usuario.definirTokenAcesso(resposta.data.access_token)
+                        this.notificar(TipoNotificacao.SUCESSO,'Perfeito!',`Login realizado com sucesso!`);
+                        this.$router.push('/projetos')
+                    })
+                    .catch(async () => {
+                        this.notificar(TipoNotificacao.FALHA,'Ops!',`Credenciais incorretas!`);
+                        this.usuario.removerTokenAcesso();
+                    })
+            },
+            limparFormulario() : void {
+                this.usuario.email = null;
+                this.usuario.senha = null;
             }
         },
         setup(){
-            const store = useStore();
+            const usuario = useUsuarioStore();
             return {
-                store
+                usuario
             }
         }
     })
