@@ -14,7 +14,7 @@
                     <option :value="projeto.id"
                             v-for="projeto in projetos"
                             :key="projeto.id"
-                    >{{ projeto.nome_do_projeto }}</option>
+                    >{{ projeto.name }}</option>
                 </select>
                 </div>
             </div>
@@ -24,9 +24,9 @@
 </template>
 <script lang="ts">
     import { defineComponent, computed } from 'vue';
-    import { useStore } from 'vuex';
-    import { key } from '@/store';
+    import { useProjetoStore } from '@/stores/projeto';
     import Cronometro from '@/components/Cronometro.vue';
+    import TarefaInterface from '@/interfaces/TarefaInterface';
 
     export default defineComponent({
         name: 'Formulario',
@@ -42,18 +42,21 @@
         },
         methods: {
             finalizarTarefa(tempo_encerrado : number) : void {
+                let projeto = this.projetos.find(proj => proj.id == this.id_projeto);
                 this.$emit('aoSalvarTarefa',{
-                    duracao_em_segundos: tempo_encerrado,
-                    descricao: this.descricao,
-                    projeto: this.projetos.find(proj => proj.id == this.id_projeto)
-                });
+                    time: tempo_encerrado,
+                    description: this.descricao,
+                    project: projeto,
+                    project_id: projeto.id
+                } as TarefaInterface);
                 this.descricao = null;
             }
         },
         setup (){
-            const store = useStore(key);
+            const projeto = useProjetoStore();
+            projeto.todos();
             return {
-                projetos: computed(() => store.state.projeto.projetos)
+                projetos: projeto.projetos
             }
         }
     })

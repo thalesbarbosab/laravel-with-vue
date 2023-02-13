@@ -18,7 +18,7 @@
             @aoModalSalvado="alterar" v-if="tarefa_selecionada">
             <div class="field">
                 <label for="descricao" class="label">Descrição</label>
-                <input type="text" class="input" v-model="tarefa_selecionada.descricao" id="descricao"
+                <input type="text" class="input" v-model="tarefa_selecionada.description" id="descricao"
                     placeholder="Insira a descrição">
             </div>
         </Modal>
@@ -31,7 +31,7 @@
     import { TipoNotificacao } from '@/interfaces/NotificacaoInterface';
     import TarefaInterface from '@/interfaces/TarefaInterface';
     import Box from '@/components/Box.vue';
-    import { useStore } from '@/store';
+    import { useTarefaStore } from '@/stores/tarefa';
     import { NotificacaoMixin } from '@/mixins/Notificar';
     import Modal from "@/components/Modal.vue";
 
@@ -39,7 +39,7 @@
         name: 'ListaTarefas',
         data() {
             return {
-                tarefa_selecionada: null as TarefaInterface | null,
+                tarefa_selecionada: null as TarefaInterface,
             }
         },
         computed: {
@@ -50,22 +50,24 @@
                 return this.tarefa_selecionada != null
             },
             tarefaSelecionadaTemDescricao(): boolean {
-                return this.tarefa_selecionada.descricao ? true : false;
+                return this.tarefa_selecionada.description ? true : false;
             }
         },
         mixins: [NotificacaoMixin],
         methods: {
             salvar(tarefa: TarefaInterface) {
-                this.store.dispatch('NOVA_TAREFA', tarefa)
-                    .then(() => {
+                this.tarefa.nova(tarefa)
+                    .then(async() => {
+                        this.tarefa.todas();
                         this.notificar(TipoNotificacao.SUCESSO, 'Feito!', `Tarefa cadastrada com sucesso.`);
                     })
-                    .catch(() => {
+                    .catch(async(erro) => {
+                        console.error(erro)
                         this.notificar(TipoNotificacao.FALHA, 'Ops!', `Não foi possível cadastrar a tarefa.`);
                     })
             },
             alterar() {
-                this.store.dispatch('ALTERAR_TAREFA', this.tarefa_selecionada)
+                this.tarefa.alterar(this.tarefa_selecionada)
                     .then(() => {
                         this.removerSelecaoTarefa();
                         this.notificar(TipoNotificacao.SUCESSO, 'Feito!', `Tarefa alterada com sucesso.`);
@@ -88,15 +90,15 @@
             Modal
         },
         setup() {
-            const store = useStore();
+            const tarefa = useTarefaStore();
             const filtro = ref("");
-            store.dispatch('OBTER_TAREFAS');
+            tarefa.todas();
             watch(filtro,() => {
-                store.dispatch('OBTER_TAREFAS',filtro.value)
+                tarefa.todas(filtro.value)
             })
             return {
-                tarefas: computed(() => store.state.tarefa.tarefas),
-                store,
+                tarefas: computed(() => tarefa.tarefas),
+                tarefa,
                 filtro,
             }
         }

@@ -3,7 +3,8 @@ import ProjetoInterface from "@/interfaces/ProjetoInterface";
 export default interface TarefaInterface
 {
     id? : Number,
-    duracao_em_segundos : Number,
-    descricao : String,
-    projeto: ProjetoInterface
+    project_id? : String
+    time : Number,
+    description : String,
+    project: ProjetoInterface,
 }

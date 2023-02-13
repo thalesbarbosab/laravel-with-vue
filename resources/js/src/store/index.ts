@@ -2,11 +2,9 @@ import { InjectionKey } from 'vue';
 import { createStore, Store, useStore as useStoreVuex } from 'vuex';
 
 import { NotificacaoInterface } from '@/interfaces/NotificacaoInterface';
-import { EstadoTarefa, tarefa } from '@/store/modulos/tarefa/';
 
 export interface Estado {
     notificacoes: NotificacaoInterface[],
-    tarefa: EstadoTarefa,
 }
 
 export const key: InjectionKey<Store<Estado>> = Symbol()
@@ -14,9 +12,6 @@ export const key: InjectionKey<Store<Estado>> = Symbol()
 export const store = createStore<Estado>({
     state: {
         notificacoes: [],
-        tarefa: {
-            tarefas: []
-        },
     },
     mutations: {
         'NOTIFICAR'(state, notificacao : NotificacaoInterface){
@@ -31,7 +26,7 @@ export const store = createStore<Estado>({
         //
     },
     modules: {
-        tarefa,
+        //
     }
 })
 

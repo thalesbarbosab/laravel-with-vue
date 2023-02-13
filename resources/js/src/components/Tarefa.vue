@@ -5,13 +5,13 @@
                 <i class="far fa-check-square"></i>
             </div>
             <div class="column is-4">
-                {{ tarefa.descricao || '[Tarefa sem descrição]' }}
+                {{ tarefa.description || '[Tarefa sem descrição]' }}
             </div>
             <div class="column is-3">
-                {{ tarefa.projeto?.nome_do_projeto }}
+                {{ tarefa.project?.name }}
             </div>
             <div class="column is-3">
-                {{ tarefa.duracao_em_segundos }}
+                {{ tarefa.time }}
             </div>
         </div>
     </Box>
