@@ -9,18 +9,24 @@ As an example, the project learned in the Alura vue course, the alura tracker, w
 
 ## How to use this project
 
-### Open 4 prompt commands to stay execution on the using:
+###  * Configure ```.env``` file with database conection
 
-### Prompt 1 - Run command bellow, first: to install all packages for laravel, second: create a new keys for laravel passport api and third: install vue and other js packages(administration pemissions is recommended)
+###  * Open 4 prompt commands to stay execution on the using:
+
+###  * Prompt 1 - Run commands bellow, first: to install all packages for laravel, second: migrate tables into your database, third: create a app key, fourth: create laravel passport api key and fiveth: install vue and other js packages(administration permissions is recommended)
 ```composer install```
-next
+,
+```php artisan migrate```
+,
+```php artisan key:generate```
+,
 ```php artisan passport:keys```
-then
+,
 ```npm install```
-### Prompt 2 - Run command bellow to start laravel server
+### * Prompt 2 - Run command bellow to start laravel server (keep opened)
 ```php artisan serve```
-### Prompt 3 - Run command bellow to start vitejs to compile that vue project
+### * Prompt 3 - Run command bellow to start vitejs to compile that vue project (keep opened)
 ```npm run dev```
-### Prompt 4 - Run command bellow to start json-serve faker api 
+### * Prompt 4 - Run command bellow to start json-serve faker api (keep opened)
 ```npm run api```
 
