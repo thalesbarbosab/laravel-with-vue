@@ -26,15 +26,6 @@ export const useUsuarioStore = defineStore('usuario',{
                     }
                 );
         },
-        verificarTokenApi(){
-            return cliente_http.get('/token/verify',{
-                        headers: {
-                            'Authorization': `Bearer ${this.token_acesso}`,
-                            'Accept': 'application/json'
-                        }
-                    }
-                );
-        },
         obterTokenAcesso() {
             this.token_acesso = localStorage.getItem('token_acesso')
             return this.token_acesso;
@@ -50,17 +41,6 @@ export const useUsuarioStore = defineStore('usuario',{
         }
     },
     getters: {
-        acessoValido() : boolean {
-            const token = this.obterTokenAcesso();
-            if(token == null){
-                return false;
-            }
-            const verificar_token_api = this.verificarTokenApi();
-            if(!verificar_token_api){
-                return false;
-            }
-            return true;
-        },
         logado() : boolean {
             const token = this.obterTokenAcesso();
             if(token == null){

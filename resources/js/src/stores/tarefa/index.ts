@@ -15,12 +15,7 @@ export const useTarefaStore = defineStore('tarefa',{
             if(filtro){
                 url += '?descricao=' + filtro;
             }
-            const usuario = useUsuarioStore();
-            cliente_http.get(url,{
-                            headers: {
-                                'Authorization': `Bearer ${usuario.token_acesso}`,
-                            }
-                        })
+            cliente_http.get(url)
                         .then(async(resposta) => {
                             this.tarefas = resposta.data
                         })
@@ -30,30 +25,17 @@ export const useTarefaStore = defineStore('tarefa',{
 
         },
         nova(tarefa : TarefaInterface){
-            const usuario = useUsuarioStore();
             return cliente_http.post('/tasks', tarefa, {
                         headers: {
-                            'Authorization': `Bearer ${usuario.token_acesso}`,
                             'Content-Type': 'multipart/form-data'
                         }
                     });
         },
         alterar(tarefa : TarefaInterface){
-            const usuario = useUsuarioStore();
-            return cliente_http.put(`/tasks/${tarefa.id}`, tarefa,{
-                        headers: {
-                            'Authorization': `Bearer ${usuario.token_acesso}`,
-                        }
-                    });
+            return cliente_http.put(`/tasks/${tarefa.id}`, tarefa);
         },
         remover(id_tarefa){
-            const usuario = useUsuarioStore();
-            return cliente_http.delete(`/tasks/${id_tarefa}`,{
-                        headers: {
-                            'Authorization': `Bearer ${usuario.token_acesso}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
+            return cliente_http.delete(`/tasks/${id_tarefa}`);
         },
     },
     getters: {

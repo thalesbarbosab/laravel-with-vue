@@ -67,7 +67,7 @@
     roteador.beforeEach((to, from, next) =>{
         if(to.meta.requer_autenticacao){
             const usuario = useUsuarioStore();
-            const resultado = usuario.acessoValido;
+            const resultado = usuario.logado;
             if(!resultado){
                 next({name: 'login'});
             }

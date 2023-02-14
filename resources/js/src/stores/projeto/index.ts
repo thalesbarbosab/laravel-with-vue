@@ -11,13 +11,7 @@ export const useProjetoStore = defineStore('projeto',{
     },
     actions: {
         todos() : void{
-            const usuario = useUsuarioStore();
-            cliente_http.get('/projects',
-                        {
-                            headers: {
-                                'Authorization': `Bearer ${usuario.token_acesso}`,
-                            }
-                        })
+            cliente_http.get('/projects')
                         .then(async(resposta) => {
                             this.projetos = resposta.data
                         })
@@ -27,30 +21,17 @@ export const useProjetoStore = defineStore('projeto',{
 
         },
         novo(projeto : ProjetoInterface){
-            const usuario = useUsuarioStore();
             return cliente_http.post('/projects', projeto, {
                         headers: {
-                            'Authorization': `Bearer ${usuario.token_acesso}`,
                             'Content-Type': 'multipart/form-data'
                         }
                     });
         },
         alterar(projeto : ProjetoInterface){
-            const usuario = useUsuarioStore();
-            return cliente_http.put(`/projects/${projeto.id}`, projeto,{
-                        headers: {
-                            'Authorization': `Bearer ${usuario.token_acesso}`,
-                        }
-                    });
+            return cliente_http.put(`/projects/${projeto.id}`, projeto);
         },
         remover(id_projeto){
-            const usuario = useUsuarioStore();
-            return cliente_http.delete(`/projects/${id_projeto}`,{
-                        headers: {
-                            'Authorization': `Bearer ${usuario.token_acesso}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
+            return cliente_http.delete(`/projects/${id_projeto}`);
         },
     },
     getters: {
