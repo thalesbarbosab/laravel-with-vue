@@ -13,7 +13,7 @@
 </template>
 <script lang="ts">
     import { defineComponent, computed } from 'vue';
-    import { useStore } from '@/store';
+    import { useNotificacaoStore } from '@/stores/notificacao';
     import { TipoNotificacao } from '@/interfaces/NotificacaoInterface';
     export default defineComponent({
         name: 'Notificacao',
@@ -27,9 +27,9 @@
             }
         },
         setup(){
-            const store = useStore();
+            const notificacao = useNotificacaoStore();
             return {
-                notificacoes: computed(()=> store.state.notificacoes)
+                notificacoes: computed(()=> notificacao.notificacoes)
             }
         }
     });

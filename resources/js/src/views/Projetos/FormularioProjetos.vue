@@ -32,10 +32,6 @@
         mixins: [NotificacaoMixin],
         methods: {
             salvar() {
-                if(this.nome_do_projeto == ''){
-                    this.notificar(TipoNotificacao.ATENCAO,'Ops!',`O nome do projeto é obrigatório!`);
-                    return;
-                }
                 let projeto : ProjetoInterface = {
                     id: this.id,
                     name: this.nome_do_projeto,
@@ -46,17 +42,12 @@
                             this.notificar(TipoNotificacao.SUCESSO,'Feito!',`Projeto alterado com sucesso`);
                             this.$router.push('/projetos')
                         })
-                        .catch(async(erro)=>{
-                            this.notificar(TipoNotificacao.FALHA,'Ops!',`Não foi possível alterar o projeto.`);
-                        })
                 }else{
-                    this.projeto.novo(projeto)
-                        .then(async()=>{
+                   this.projeto.novo(projeto)
+                        .then(async()=> {
+                            console.log('then')
                             this.notificar(TipoNotificacao.SUCESSO,'Feito!',`Projeto cadastrado com sucesso.`);
                             this.$router.push('/projetos')
-                        })
-                        .catch(async (erro)=>{
-                            this.notificar(TipoNotificacao.FALHA,'Ops!',`Não foi possível cadastrar o projeto.`);
                         })
                 }
             }

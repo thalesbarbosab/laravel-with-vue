@@ -1,6 +1,9 @@
 import axios, { AxiosInstance } from "axios"
 import roteador from '@/routers/Roteador.vue';
 import { useUsuarioStore } from "@/stores/usuario";
+import { NotificacaoInterface } from '@/interface/NotificacaoInterface.vue'
+import { useNotificacaoStore } from '@/stores/notificacao';
+import { TipoNotificacao } from "@/interfaces/NotificacaoInterface";
 
 export const credenciais_api = {
     client_id: '9877b67d-ae37-44a1-9fe9-e8fba35fe7a6',
@@ -13,7 +16,7 @@ export const cliente_http : AxiosInstance = axios.create({
 })
 
 cliente_http.interceptors.request.use(
-    async (config) => {
+    (config) => {
         if(config.url == '/token'){
             return config;
         }
@@ -26,21 +29,58 @@ cliente_http.interceptors.request.use(
         }
         config.headers.Authorization = `Bearer ${token}`;
         return config;
-    }, async (erro) => {
+    }, (erro) => {
         console.error(erro)
         return erro;
     }
 );
 
 cliente_http.interceptors.response.use(
-    async (resposta) => resposta,
-    async (error) => {
+    response => {
+        return response;
+    },
+    error => {
+        const notificacao = useNotificacaoStore();
+        // Process Authorization Errors
         if(error.response.status >= 400 && error.response.status <= 403){
             const usuario = useUsuarioStore();
             usuario.removerTokenAcesso();
             roteador.push({name: 'login'});
+            notificacao.notificar({
+                titulo: 'Ops!',
+                texto: 'Você não tem permissão para executar essa ação',
+                tipo: TipoNotificacao.ATENCAO,
+                id: 500,
+            } as NotificacaoInterface);
             return error;
         }
+        switch (error.response.status) {
+            case 422:
+                // Process Unprocessable Entity Errors
+                Object.entries(error.response.data['errors']).forEach((item) => {
+                    item.forEach((item2, index) => {
+                        if(index > 0){
+                            notificacao.notificar({
+                                titulo: 'Verifique os dados informados!',
+                                texto: `${item2}`,
+                                tipo: TipoNotificacao.ATENCAO,
+                                id: index
+                            } as NotificacaoInterface);
+                        }
+                    })
+                })
+                throw error;
+            break;
+            default:
+                notificacao.notificar({
+                    titulo: 'Ops!',
+                    texto: 'Ocorreu um erro ao executar a ultima operação.',
+                    tipo: TipoNotificacao.ATENCAO,
+                    id: 500,
+                } as NotificacaoInterface);
+            break;
+        }
+        return error;
     }
 );
 
