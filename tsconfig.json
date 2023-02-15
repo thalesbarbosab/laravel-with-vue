@@ -2,6 +2,7 @@
     "compilerOptions": {
         "moduleResolution": "node",
         "baseUrl": "./resources/js",
+        "types": ["vite/client"],
         "paths": {
             "@/*": [
                 "src/*",
@@ -12,6 +13,8 @@
             "dom",
             "dom.iterable",
             "scripthost"
-        ]
+        ],
+        "target": "esnext",
+        "module": "esnext",
     }
 }

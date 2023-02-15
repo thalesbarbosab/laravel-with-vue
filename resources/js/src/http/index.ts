@@ -6,13 +6,14 @@ import { useNotificacaoStore } from '@/stores/notificacao';
 import { TipoNotificacao } from "@/interfaces/NotificacaoInterface";
 
 export const credenciais_api = {
-    client_id: '9877b67d-ae37-44a1-9fe9-e8fba35fe7a6',
-    client_secret: 'ak4cVqvfjqpQwBQttx9P7aqSOV4PbutDPN8cGw8j',
-    grant_type: 'password'
+    client_id: import.meta.env.VITE_CLIENT_ID,
+    client_secret: import.meta.env.VITE_CLIENT_SECRET,
+    grant_type:  import.meta.env.VITE_GRANT_TYPE
 }
 
 export const cliente_http : AxiosInstance = axios.create({
-    baseURL: '/api',
+    // baseURL: '/api',
+    baseURL: import.meta.env.VITE_BASEURL,
 })
 
 cliente_http.interceptors.request.use(
